@@ -15,6 +15,10 @@ contract Escrow {
         arbiter = _arbiter;
         beneficiary = _beneficiary;
         depositor = msg.sender;
+        require(
+            address(depositor).balance >= msg.value,
+            "Insufficient balance for deposit"
+        );
     }
 
     event Approved(uint);
