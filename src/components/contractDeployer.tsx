@@ -6,7 +6,6 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { FormData } from "../interface/interface";
 import { ethers } from "ethers";
 import { deployContract } from "@/utils/utilsFunction";
-// import { deployContract } from "../utils/utilsFunction";
 
 const ContractDeployer = ({ account }: any) => {
     const [signer, setSigner] = useState<any>();
@@ -59,18 +58,18 @@ const ContractDeployer = ({ account }: any) => {
                 balanceInEth
             );
             console.log(deploy);
-            // const existingAddressesString =
-            //     localStorage.getItem("contractAddresses");
-            // const existingAddresses = existingAddressesString
-            //     ? JSON.parse(existingAddressesString)
-            //     : [];
+            const existingAddressesString =
+                localStorage.getItem("contractAddresses");
+            const existingAddresses = existingAddressesString
+                ? JSON.parse(existingAddressesString)
+                : [];
+            existingAddresses.push(deploy);
 
-            // existingAddresses.push(deployContract);
-
-            // await localStorage.setItem(
-            //     "contractAddresses",
-            //     JSON.stringify(existingAddresses)
-            // );
+            await localStorage.setItem(
+                "contractAddresses",
+                JSON.stringify(existingAddresses)
+            );
+            console.log(existingAddresses, "local storage");
         } catch (error) {
             console.log(error);
         }
