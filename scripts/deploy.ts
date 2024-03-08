@@ -17,16 +17,20 @@ export default async function deploy(
             args: [arbiter, beneficiary],
             value,
         });
+        console.log(hash, "hash");
         const publicClient = createPublicClient({
             chain: sepolia,
-            transport: http("nvG8iXEA2WZisKCsiu2X4K09_4OeHFA8"),
+            transport: http(
+                "https://eth-sepolia.g.alchemy.com/v2/nvG8iXEA2WZisKCsiu2X4K09_4OeHFA8"
+            ),
         });
+        console.log(publicClient, "publicClient");
         const tx = await publicClient.waitForTransactionReceipt({
             hash,
         });
-        console.log(tx);
+        console.log(tx, tx);
 
-        return { hash, address: tx.contractAddress };
+        return { address: tx.contractAddress };
     } catch (error) {
         console.log(error);
     }

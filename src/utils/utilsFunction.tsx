@@ -14,45 +14,6 @@ const checkIsWallet = async (address: string) => {
     }
 };
 
-const checkBalance = async () => {
-    try {
-        // const balance = await ethers.
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-// export async function deploy(formData: FormData, signer: any) {
-//     try {
-//         const { arbiterAddress, beneficiaryAddress, balanceInEth } = formData;
-//         const checkArbiter = await checkIsWallet(arbiterAddress);
-//         const checkBeneficiary = await checkIsWallet(beneficiaryAddress);
-//         if (!checkArbiter || !checkBeneficiary) {
-//             throw new Error("Invalid Address Input");
-//         }
-//         const factory = new ethers.ContractFactory(
-//             Escrow.abi,
-//             Escrow.bytecode,
-//             signer
-//         );
-
-//         const balanceInWei = ethers.parseEther(balanceInEth.toString());
-//         console.log(balanceInWei);
-//         const deployedContract = await factory.deploy(
-//             arbiterAddress,
-//             beneficiaryAddress,
-//             { value: balanceInWei }
-//         );
-//         console.log(
-//             "Contract has been deployed to: ",
-//             deployedContract.getAddress()
-//         );
-//         return await deployedContract.getAddress();
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
 export async function deployContract(
     address: `0x${string}`,
     arbiter: string,
@@ -60,7 +21,6 @@ export async function deployContract(
     value: any
 ) {
     try {
-        console.log(address, arbiter, beneficiary, value);
         if (!arbiter || !beneficiary || !value) {
             return alert("Please fill all the fields");
         }
@@ -69,9 +29,17 @@ export async function deployContract(
             chain: sepolia,
             transport: custom(window.ethereum),
         });
+        console.log(client, "client");
         const ethValue = parseEther(value);
         const tx = await deploy(client, arbiter, beneficiary, ethValue);
-        return tx?.address;
+        console.log(tx, "tx dari utilsFunction");
+        const contract = {
+            transactionAddress: tx?.address,
+            aribterAddress: arbiter,
+            beneficiaryAddress: beneficiary,
+            value: ethValue.toString(),
+        };
+        return contract;
     } catch (error) {
         console.log(error);
     }
