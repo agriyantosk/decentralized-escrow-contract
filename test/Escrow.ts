@@ -1,17 +1,17 @@
-const {
+import {
     time,
     loadFixture,
-} = require("@nomicfoundation/hardhat-toolbox/network-helpers");
-const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
-const { expect } = require("chai");
-const { ethers } = require("hardhat");
+} from "@nomicfoundation/hardhat-toolbox/network-helpers";
+import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+import { expect } from "chai";
+import { ethers } from "hardhat";
 
 describe("Escrow", function () {
     let Escrow;
-    let escrow;
-    let owner;
-    let beneficiary;
-    let arbiter;
+    let escrow: any;
+    let owner: any;
+    let beneficiary: any;
+    let arbiter: any;
 
     this.beforeAll(async function () {
         [owner, beneficiary, arbiter] = await ethers.getSigners();

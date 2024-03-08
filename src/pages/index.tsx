@@ -7,6 +7,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+
     return (
         <>
             <div className="h-screen w-screen flex flex-col items-center justify-center justify-items-center">
@@ -30,7 +31,6 @@ export default function Home() {
                             chain &&
                             (!authenticationStatus ||
                                 authenticationStatus === "authenticated");
-
                         return (
                             <>
                                 {(() => {
@@ -55,7 +55,6 @@ export default function Home() {
                                             </button>
                                         );
                                     }
-
                                     return (
                                         <>
                                             <div className="flex gap-3 justify-end w-full">
@@ -118,7 +117,9 @@ export default function Home() {
                                                     </h1>
                                                 </div>
                                                 <div className="flex justify-evenly gap-10">
-                                                    <ContractDeployer />
+                                                    <ContractDeployer
+                                                        account={account}
+                                                    />
                                                     <EscrowContract />
                                                 </div>
                                             </div>
