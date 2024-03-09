@@ -2,6 +2,7 @@ import { ethers } from "hardhat";
 import { createPublicClient, http } from "viem";
 import { sepolia } from "viem/chains";
 import Escrow from "../artifacts/contracts/Escrow.sol/Escrow.json";
+import { publicClient } from "@/config";
 
 export default async function deploy(
     walletClient: any,
@@ -17,18 +18,10 @@ export default async function deploy(
             args: [arbiter, beneficiary],
             value,
         });
-        console.log(hash, "hash");
-        const publicClient = createPublicClient({
-            chain: sepolia,
-            transport: http(
-                "https://eth-sepolia.g.alchemy.com/v2/nvG8iXEA2WZisKCsiu2X4K09_4OeHFA8"
-            ),
-        });
-        console.log(publicClient, "publicClient");
+
         const tx = await publicClient.waitForTransactionReceipt({
             hash,
         });
-        console.log(tx, tx);
 
         return { address: tx.contractAddress };
     } catch (error) {
