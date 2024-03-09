@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import { createWalletClient, custom, parseEther } from "viem";
 import { sepolia } from "viem/chains";
 import deploy from "../../scripts/deploy";
+import { useWriteContract } from "wagmi";
 
 const checkIsWallet = async (address: string) => {
     try {
@@ -24,18 +25,23 @@ export async function deployContract(
         if (!arbiter || !beneficiary || !value) {
             return alert("Please fill all the fields");
         }
+        const arbiterIsWallet = await checkIsWallet(arbiter);
+        const beneficiaryIsWallet = await checkIsWallet(beneficiary);
+        if (!arbiterIsWallet || !beneficiaryIsWallet) {
+            throw new Error("Invalid address input!");
+        }
         const client = createWalletClient({
             account: address,
             chain: sepolia,
             transport: custom(window.ethereum),
         });
-        console.log(client, "client");
+
         const ethValue = parseEther(value);
         const tx = await deploy(client, arbiter, beneficiary, ethValue);
-        console.log(tx, "tx dari utilsFunction");
+
         const contract = {
             transactionAddress: tx?.address,
-            aribterAddress: arbiter,
+            arbiterAddress: arbiter,
             beneficiaryAddress: beneficiary,
             value: ethValue.toString(),
         };

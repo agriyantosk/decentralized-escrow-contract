@@ -7,7 +7,6 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-
     return (
         <>
             <div className="h-screen w-screen flex flex-col items-center justify-center justify-items-center">
@@ -120,7 +119,9 @@ export default function Home() {
                                                     <ContractDeployer
                                                         account={account}
                                                     />
-                                                    <EscrowContract />
+                                                    <EscrowContract
+                                                        account={account}
+                                                    />
                                                 </div>
                                             </div>
                                         </>

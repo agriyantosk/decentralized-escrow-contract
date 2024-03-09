@@ -29,20 +29,20 @@ const ContractDeployer = ({ account }: any) => {
     useEffect(() => {
         getAccounts();
     }, []);
-    // State to store input values
+
     const [formData, setFormData] = useState<FormData>({
         arbiterAddress: "",
         beneficiaryAddress: "",
         balanceInEth: "",
     });
 
-    // Function to handle input changes
+
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    // Function to handle button click
+
     const handleButtonClick = async () => {
         try {
             const { arbiterAddress, beneficiaryAddress, balanceInEth } =
@@ -73,7 +73,6 @@ const ContractDeployer = ({ account }: any) => {
         } catch (error) {
             console.log(error);
         }
-        // Log the input values to the console
     };
 
     return (
