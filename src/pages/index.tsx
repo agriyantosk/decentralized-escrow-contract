@@ -87,13 +87,23 @@ export default function Home() {
                                     {(() => {
                                         if (!connected) {
                                             return (
-                                                <button
-                                                    className="text-center bg-blue-500 rounded-lg w-[10%] text-white hover:bg-blue-400 py-2"
-                                                    onClick={openConnectModal}
-                                                    type="button"
-                                                >
-                                                    Connect Wallet
-                                                </button>
+                                                <>
+                                                    <div className="flex flex-col gap-10 w-full justify-center items-center">
+                                                        <h1 className="text-5xl">
+                                                            Escrow Smart
+                                                            Contract Generator
+                                                        </h1>
+                                                        <button
+                                                            className="text-center bg-blue-500 rounded-lg w-[10%] text-white hover:bg-blue-400 py-2"
+                                                            onClick={
+                                                                openConnectModal
+                                                            }
+                                                            type="button"
+                                                        >
+                                                            Connect Wallet
+                                                        </button>
+                                                    </div>
+                                                </>
                                             );
                                         }
 
