@@ -75,5 +75,7 @@ export default async function connect(
     } catch (error) {
         console.log(error);
         res.status(400).json({ message: "An Error Occured" });
+    } finally {
+        await client.quit();
     }
 }
