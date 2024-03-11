@@ -16,8 +16,6 @@
 # production
 /build
 
-/src/artifacts
-
 # misc
 .DS_Store
 *.pem
