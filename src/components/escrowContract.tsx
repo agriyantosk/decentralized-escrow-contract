@@ -12,7 +12,13 @@ import { sepolia } from "viem/chains";
 import { publicClient } from "@/config";
 import { useEffect, useState } from "react";
 
-const EscrowContract = ({ account, contracts, refetch }: any) => {
+const EscrowContract = ({
+    account,
+    contracts,
+    refetch,
+    skeletonLoading,
+    setSkeleton,
+}: any) => {
     // const retrieveContract = localStorage.getItem("contractAddresses");
     // const contracts = JSON.parse(retrieveContract as string);
 
@@ -21,6 +27,7 @@ const EscrowContract = ({ account, contracts, refetch }: any) => {
         arbiterAddress: string
     ) => {
         try {
+            setSkeleton(true);
             if (arbiterAddress !== account.address)
                 return alert("You are not the arbiter");
             const client = createWalletClient({
@@ -61,69 +68,98 @@ const EscrowContract = ({ account, contracts, refetch }: any) => {
 
     return (
         <>
-            <div className="border-2 border-black p-20 flex flex-col gap-10 rounded-lg">
-                <h1>Deployed Contract</h1>
-                <div className="max-h-[400px] overflow-y-auto flex flex-col gap-10">
-                    {/* <h1>{JSON.stringify(contracts)}</h1> */}
-                    {contracts &&
-                        contracts?.map((el: any, index: number) => {
-                            const parsed = JSON.parse(el);
-                            return (
-                                <>
-                                    <div
-                                        key={index}
-                                        className="border-2 border-black p-5 rounded-lg"
-                                    >
-                                        <div className="flex gap-10">
-                                            <div>
-                                                <div className="mb-5">
-                                                    <h1>Contract Address:</h1>
-                                                    <h1>
-                                                        {parsed.contractAddress}
-                                                    </h1>
+            <div className="border-2 border-black p-10 flex flex-col gap-10 w-[100%] rounded-lg">
+                {skeletonLoading ? (
+                    <div
+                        role="status"
+                        className="max-w-sm animate-pulse w-[100%]"
+                    >
+                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                ) : (
+                    <>
+                        <h1>Deployed Contract</h1>
+                        <div className="max-h-[400px] overflow-y-auto flex flex-col gap-10">
+                            {contracts &&
+                                contracts?.map((el: any, index: number) => {
+                                    const parsed = JSON.parse(el);
+                                    return (
+                                        <>
+                                            <div
+                                                key={index}
+                                                className="border-2 border-black p-5 flex flex-col gap-10 rounded-lg"
+                                            >
+                                                <div className="flex justify-evenly gap-10">
+                                                    <div>
+                                                        <div className="mb-5">
+                                                            <h1>
+                                                                Contract
+                                                                Address:
+                                                            </h1>
+                                                            <h1>
+                                                                {
+                                                                    parsed.contractAddress
+                                                                }
+                                                            </h1>
+                                                        </div>
+                                                        <div className="mb-5">
+                                                            <h1>
+                                                                Arbiter Address:
+                                                            </h1>
+                                                            <h1>
+                                                                {
+                                                                    parsed.arbiterAddress
+                                                                }
+                                                            </h1>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="mb-5">
+                                                            <h1>
+                                                                Beneficiary
+                                                                Address:{" "}
+                                                            </h1>
+                                                            <h1>
+                                                                {
+                                                                    parsed.beneficiaryAddress
+                                                                }
+                                                            </h1>
+                                                        </div>
+                                                        <div className="mb-5">
+                                                            <h1>Value:</h1>
+                                                            <h1>
+                                                                {+parsed?.value}{" "}
+                                                                ETH
+                                                            </h1>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="mb-5">
-                                                    <h1>Arbiter Address:</h1>
-                                                    <h1>
-                                                        {parsed.arbiterAddress}
-                                                    </h1>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="mb-5">
-                                                    <h1>
-                                                        Beneficiary Address:{" "}
-                                                    </h1>
-                                                    <h1>
-                                                        {
-                                                            parsed.beneficiaryAddress
+                                                <div className="flex justify-center">
+                                                    <Button
+                                                        onClick={() =>
+                                                            approve(
+                                                                parsed.contractAddress,
+                                                                parsed.arbiterAddress
+                                                            )
                                                         }
-                                                    </h1>
-                                                </div>
-                                                <div className="mb-5">
-                                                    <h1>Value:</h1>
-                                                    <h1>
-                                                        {+parsed?.value} ETH
-                                                    </h1>
+                                                        className="text-center bg-blue-500 rounded-lg w-[25%] text-white hover:bg-blue-400 py-2"
+                                                    >
+                                                        Approve
+                                                    </Button>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <Button
-                                            onClick={() =>
-                                                approve(
-                                                    parsed.contractAddress,
-                                                    parsed.arbiterAddress
-                                                )
-                                            }
-                                            className="w-full text-center"
-                                        >
-                                            Approve
-                                        </Button>
-                                    </div>
-                                </>
-                            );
-                        })}
-                </div>
+                                        </>
+                                    );
+                                })}
+                        </div>
+                    </>
+                )}
             </div>
         </>
     );

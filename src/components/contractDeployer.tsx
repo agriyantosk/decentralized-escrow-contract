@@ -7,13 +7,11 @@ import { FormData } from "../interface/interface";
 import { ethers } from "ethers";
 import { deployContract } from "@/utils/utilsFunction";
 
-const ContractDeployer = ({ account, refetch }: any) => {
-    const [signer, setSigner] = useState<any>();
+const ContractDeployer = ({ account, refetch, setSkeleton }: any) => {
     const [balance, setBalance] = useState<any>();
 
     async function getAccounts() {
         try {
-            // Initialize a provider (assuming you have an Ethereum node running at 'http://localhost:8545')
             const provider = new ethers.AlchemyProvider(
                 "sepolia",
                 "nvG8iXEA2WZisKCsiu2X4K09_4OeHFA8"
@@ -45,6 +43,7 @@ const ContractDeployer = ({ account, refetch }: any) => {
 
     const handleButtonClick = async () => {
         try {
+            setSkeleton(true);
             const { arbiterAddress, beneficiaryAddress, balanceInEth } =
                 formData;
 
@@ -57,7 +56,6 @@ const ContractDeployer = ({ account, refetch }: any) => {
                 beneficiaryAddress,
                 balanceInEth
             );
-            console.log(deploy);
             if (deploy) {
                 await fetch("/api/redis/write", {
                     method: "POST",
@@ -69,20 +67,7 @@ const ContractDeployer = ({ account, refetch }: any) => {
                         value: balanceInEth,
                     }),
                 });
-                console.log("selamat anda berhasil");
             }
-            // const existingAddressesString =
-            //     localStorage.getItem("contractAddresses");
-            // const existingAddresses = existingAddressesString
-            //     ? JSON.parse(existingAddressesString)
-            //     : [];
-            // existingAddresses.push(deploy);
-
-            // await localStorage.setItem(
-            //     "contractAddresses",
-            //     JSON.stringify(existingAddresses)
-            // );
-            // console.log(existingAddresses, "local storage");
         } catch (error) {
             console.log(error);
         } finally {
@@ -92,41 +77,43 @@ const ContractDeployer = ({ account, refetch }: any) => {
 
     return (
         <>
-            <div className="border-2 border-black p-20 flex flex-col gap-10 rounded-lg">
-                <h1>Enter the contract detail below:</h1>
-                <Input
-                    type="text"
-                    color="default"
-                    label="Arbiter Address"
-                    placeholder="0x..."
-                    className="max-w-[300px] border-2 border-black p-2 rounded-lg"
-                    name="arbiterAddress"
-                    value={formData.arbiterAddress}
-                    onChange={handleInputChange}
-                />
-                <Input
-                    type="text"
-                    color="default"
-                    label="Beneficiary Address"
-                    placeholder="0x..."
-                    className="max-w-[300px] border-2 border-black p-2 rounded-lg"
-                    name="beneficiaryAddress"
-                    value={formData.beneficiaryAddress}
-                    onChange={handleInputChange}
-                />
-                <Input
-                    type="number"
-                    color="default"
-                    label="Balance in ETH"
-                    placeholder="1"
-                    className="max-w-[300px] border-2 border-black p-2 rounded-lg"
-                    name="balanceInEth"
-                    value={formData.balanceInEth}
-                    onChange={handleInputChange}
-                />
-                <Button color="primary" onClick={handleButtonClick}>
-                    Button
-                </Button>
+            <div className="border-2 border-black p-10 flex items-center flex-col gap-10 w-[100%] rounded-lg">
+                <>
+                    <h1>Enter the contract detail below:</h1>
+                    <Input
+                        type="text"
+                        color="default"
+                        placeholder="Arbiter Address"
+                        className="max-w-[500px] border-2 border-black p-2 rounded-lg"
+                        name="arbiterAddress"
+                        value={formData.arbiterAddress}
+                        onChange={handleInputChange}
+                    />
+                    <Input
+                        type="text"
+                        color="default"
+                        placeholder="Beneficiary Address"
+                        className="max-w-[500px] border-2 border-black p-2 rounded-lg"
+                        name="beneficiaryAddress"
+                        value={formData.beneficiaryAddress}
+                        onChange={handleInputChange}
+                    />
+                    <Input
+                        type="number"
+                        color="default"
+                        placeholder="Desired ETH"
+                        className="max-w-[500px] border-2 border-black p-2 rounded-lg"
+                        name="balanceInEth"
+                        value={formData.balanceInEth}
+                        onChange={handleInputChange}
+                    />
+                    <Button
+                        className="bg-blue-500 rounded-lg w-[50%] text-white hover:bg-blue-400 py-2"
+                        onClick={handleButtonClick}
+                    >
+                        Button
+                    </Button>
+                </>
             </div>
         </>
     );
