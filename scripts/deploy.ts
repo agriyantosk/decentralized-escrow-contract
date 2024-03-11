@@ -23,7 +23,9 @@ export default async function deploy(
             hash,
         });
 
-        return { address: tx.contractAddress };
+        return {
+            address: tx.contractAddress,
+        };
     } catch (error) {
         console.log(error);
     }

@@ -1,10 +1,14 @@
-import { FormData } from "../interface/interface";
-import Escrow from "../artifacts/contracts/Escrow.sol/Escrow.json";
 import { ethers } from "ethers";
 import { createWalletClient, custom, parseEther } from "viem";
 import { sepolia } from "viem/chains";
 import deploy from "../../scripts/deploy";
-import { useWriteContract } from "wagmi";
+
+export const storeRedis = async () => {
+    try {
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 const checkIsWallet = async (address: string) => {
     try {
@@ -40,7 +44,7 @@ export async function deployContract(
         const tx = await deploy(client, arbiter, beneficiary, ethValue);
 
         const contract = {
-            transactionAddress: tx?.address,
+            contractAddress: tx?.address,
             arbiterAddress: arbiter,
             beneficiaryAddress: beneficiary,
             value: ethValue.toString(),

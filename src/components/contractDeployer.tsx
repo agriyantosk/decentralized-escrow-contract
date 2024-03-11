@@ -36,18 +36,18 @@ const ContractDeployer = ({ account }: any) => {
         balanceInEth: "",
     });
 
-
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     };
 
+    const writeRedis = async () => {};
 
     const handleButtonClick = async () => {
         try {
             const { arbiterAddress, beneficiaryAddress, balanceInEth } =
                 formData;
-            console.log(arbiterAddress, beneficiaryAddress, balanceInEth);
+
             if (+ethers.formatEther(balance) < +formData.balanceInEth) {
                 throw new Error("Insufficient Balance");
             }
@@ -58,18 +58,31 @@ const ContractDeployer = ({ account }: any) => {
                 balanceInEth
             );
             console.log(deploy);
-            const existingAddressesString =
-                localStorage.getItem("contractAddresses");
-            const existingAddresses = existingAddressesString
-                ? JSON.parse(existingAddressesString)
-                : [];
-            existingAddresses.push(deploy);
+            if (deploy) {
+                await fetch("/api/redis/write", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        deployerAddress: account.address,
+                        contractAddress: deploy.contractAddress,
+                        arbiterAddress,
+                        beneficiaryAddress,
+                        value: balanceInEth,
+                    }),
+                });
+                console.log("selamat anda berhasil")
+            }
+            // const existingAddressesString =
+            //     localStorage.getItem("contractAddresses");
+            // const existingAddresses = existingAddressesString
+            //     ? JSON.parse(existingAddressesString)
+            //     : [];
+            // existingAddresses.push(deploy);
 
-            await localStorage.setItem(
-                "contractAddresses",
-                JSON.stringify(existingAddresses)
-            );
-            console.log(existingAddresses, "local storage");
+            // await localStorage.setItem(
+            //     "contractAddresses",
+            //     JSON.stringify(existingAddresses)
+            // );
+            // console.log(existingAddresses, "local storage");
         } catch (error) {
             console.log(error);
         }
