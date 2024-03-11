@@ -11,7 +11,6 @@ export default async function deploy(
     value: any
 ) {
     try {
-        console.log(walletClient, arbiter, beneficiary, value);
         const hash = await walletClient.deployContract({
             abi: Escrow.abi,
             bytecode: Escrow.bytecode,

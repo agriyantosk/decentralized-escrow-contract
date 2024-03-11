@@ -22,7 +22,9 @@ export default function Home() {
             for (const key in data) {
                 const contracts = data[key];
                 for (const key in contracts) {
-                    result.push(contracts[key]);
+                    const contractString = contracts[key];
+                    const contractObject = JSON.parse(contractString);
+                    result.push(contractObject);
                 }
             }
             setContracts(result);
@@ -120,7 +122,7 @@ export default function Home() {
                                         // setAccount(account);
                                         return (
                                             <>
-                                                <div className="flex flex-col gap-10 w-full h-full justify-center px-10">
+                                                <div className="flex flex-col gap-3 w-full h-full justify-center px-10">
                                                     <div className="flex justify-center">
                                                         <h1 className="text-5xl">
                                                             Escrow Smart
@@ -215,6 +217,9 @@ export default function Home() {
                                                                 }
                                                                 setSkeleton={
                                                                     setSkeletonLoading
+                                                                }
+                                                                setContracts={
+                                                                    setContracts
                                                                 }
                                                             />
                                                         </div>

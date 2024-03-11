@@ -82,7 +82,7 @@ const ContractDeployer = ({
 
     return (
         <>
-            <div className="border-2 border-black p-10 flex items-center flex-col gap-10 w-[100%] rounded-lg">
+            <div className="border-2 border-black p-10 flex items-center flex-col gap-10 w-[100%] rounded-lg pt-14">
                 <>
                     <h1>Enter the contract detail below:</h1>
                     <Input
