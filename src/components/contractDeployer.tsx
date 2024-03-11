@@ -7,7 +7,12 @@ import { FormData } from "../interface/interface";
 import { ethers } from "ethers";
 import { deployContract } from "@/utils/utilsFunction";
 
-const ContractDeployer = ({ account, refetch, setSkeleton }: any) => {
+const ContractDeployer = ({
+    account,
+    refetch,
+    setSkeleton,
+    skeletonLoading,
+}: any) => {
     const [balance, setBalance] = useState<any>();
 
     async function getAccounts() {
@@ -108,10 +113,13 @@ const ContractDeployer = ({ account, refetch, setSkeleton }: any) => {
                         onChange={handleInputChange}
                     />
                     <Button
-                        className="bg-blue-500 rounded-lg w-[50%] text-white hover:bg-blue-400 py-2"
+                        className={`bg-blue-500 rounded-lg w-[50%] text-white hover:bg-blue-400 py-2 ${
+                            skeletonLoading ? "cursor-not-allowed bg-gray-500" : ""
+                        }`}
                         onClick={handleButtonClick}
+                        disabled={skeletonLoading}
                     >
-                        Button
+                        {skeletonLoading ? "Loading..." : "Button"}
                     </Button>
                 </>
             </div>

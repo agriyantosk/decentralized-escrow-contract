@@ -134,11 +134,6 @@ export default function Home() {
                                                                     onClick={
                                                                         openChainModal
                                                                     }
-                                                                    // style={{
-                                                                    //     display: "flex",
-                                                                    //     alignItems:
-                                                                    //         "center",
-                                                                    // }}
                                                                     className="flex items-center"
                                                                     type="button"
                                                                 >
@@ -200,6 +195,9 @@ export default function Home() {
                                                                 }
                                                                 setSkeleton={
                                                                     setSkeletonLoading
+                                                                }
+                                                                skeletonLoading={
+                                                                    skeletonLoading
                                                                 }
                                                             />
                                                             <EscrowContract

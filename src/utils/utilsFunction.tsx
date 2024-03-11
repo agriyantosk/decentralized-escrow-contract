@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { createWalletClient, custom, parseEther } from "viem";
+import { Account, createWalletClient, custom, parseEther } from "viem";
 import { sepolia } from "viem/chains";
 import deploy from "../../scripts/deploy";
 
