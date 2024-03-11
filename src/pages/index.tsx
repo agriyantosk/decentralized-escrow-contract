@@ -16,7 +16,7 @@ export default function Home() {
     const fetchContract = async () => {
         try {
             setLoading(true);
-            const response = await fetch("api/redis/get");
+            const response = await fetch("/api/redis/get");
             const data = await response.json();
             const result = [];
             for (const key in data) {
