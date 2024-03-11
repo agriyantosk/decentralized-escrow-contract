@@ -26,14 +26,18 @@ export default async function connect(
     res: NextApiResponse
 ) {
     const { action } = req.query;
-    const data = JSON.parse(req.body);
-    const {
-        contractAddress,
-        arbiterAddress,
-        beneficiaryAddress,
-        value,
-        deployerAddress,
-    } = data;
+    let data;
+    let contractAddress;
+    let arbiterAddress;
+    let beneficiaryAddress;
+    let value;
+    if (req.body) {
+        data = JSON.parse(req.body);
+        contractAddress = data.contractAddress;
+        arbiterAddress = data.arbiterAddress;
+        beneficiaryAddress = data.beneficiaryAddress;
+        value = data.value;
+    }
     try {
         if (action === "write") {
             if (
@@ -50,25 +54,22 @@ export default async function connect(
                 beneficiaryAddress,
                 value,
             };
-            // const writeData = [
-            //     "HSET",
-            //     `${deployerAddress}:${contractAddress}`,
-            //     "contractDetails",
-            //     JSON.stringify(redisData),
-            // ];
             const storeRedis = await client.hSet(
-                `${deployerAddress}`,
+                "Escrow Contract Addresses",
                 contractAddress,
                 JSON.stringify(redisData)
             );
             res.status(200).json({ data: storeRedis });
         } else if (action === "get") {
-            console.log(deployerAddress, "deployerAddress");
-            const getRedis = await client.hGetAll(`${deployerAddress}`);
-            console.log(getRedis);
-            res.status(200).json({ data: getRedis });
+            const allRedisData = await client.hGetAll(
+                "Escrow Contract Addresses"
+            );
+            res.status(200).json({ data: allRedisData });
         } else if (action === "delete") {
-            const deleteRedis = await client.sendCommand(data);
+            const deleteRedis = await client.hDel(
+                "Escrow Contract Addresses",
+                contractAddress
+            );
             res.status(200).json({ data: deleteRedis });
         }
     } catch (error) {

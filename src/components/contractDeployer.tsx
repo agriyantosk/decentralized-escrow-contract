@@ -7,7 +7,7 @@ import { FormData } from "../interface/interface";
 import { ethers } from "ethers";
 import { deployContract } from "@/utils/utilsFunction";
 
-const ContractDeployer = ({ account }: any) => {
+const ContractDeployer = ({ account, refetch }: any) => {
     const [signer, setSigner] = useState<any>();
     const [balance, setBalance] = useState<any>();
 
@@ -69,7 +69,7 @@ const ContractDeployer = ({ account }: any) => {
                         value: balanceInEth,
                     }),
                 });
-                console.log("selamat anda berhasil")
+                console.log("selamat anda berhasil");
             }
             // const existingAddressesString =
             //     localStorage.getItem("contractAddresses");
@@ -85,6 +85,8 @@ const ContractDeployer = ({ account }: any) => {
             // console.log(existingAddresses, "local storage");
         } catch (error) {
             console.log(error);
+        } finally {
+            refetch();
         }
     };
 

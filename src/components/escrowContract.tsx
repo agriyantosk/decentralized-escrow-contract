@@ -12,33 +12,12 @@ import { sepolia } from "viem/chains";
 import { publicClient } from "@/config";
 import { useEffect, useState } from "react";
 
-const EscrowContract = ({ account }: any) => {
-    const [contracts, setContracts] = useState<any>();
+const EscrowContract = ({ account, contracts, refetch }: any) => {
     // const retrieveContract = localStorage.getItem("contractAddresses");
     // const contracts = JSON.parse(retrieveContract as string);
 
-    const fetchContract = async () => {
-        try {
-            const response = await fetch("api/redis/get", {
-                method: "POST",
-                body: JSON.stringify({ deployerAddress: account.address }),
-            });
-            const data = await response.json();
-            const result = [];
-            for (const key in data) {
-                const contracts = data[key];
-                for (const key in contracts) {
-                    result.push(contracts[key]);
-                }
-            }
-            setContracts(result);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const approve = async (
-        transactionAddress: `0x${string}`,
+        contractAddress: `0x${string}`,
         arbiterAddress: string
     ) => {
         try {
@@ -52,7 +31,7 @@ const EscrowContract = ({ account }: any) => {
             console.log(client);
 
             const { request } = await publicClient.simulateContract({
-                address: transactionAddress,
+                address: contractAddress,
                 abi: Escrow.abi,
                 functionName: "approve",
                 account: account.address,
@@ -67,23 +46,19 @@ const EscrowContract = ({ account }: any) => {
                 confirmations: 1,
             });
             const successTransactionAddress = receipt.logs[0].address;
-            console.log(receipt, "successTransactionAddress");
-            if (successTransactionAddress) {
-                let newStorage = contracts.filter(
-                    (e: any) =>
-                        e.transactionAddress !== successTransactionAddress
-                );
-                localStorage.removeItem("contractAddress");
-                localStorage.setItem("contractAddress", newStorage);
-            }
+            const deleteRedis = await fetch("/api/redis/delete", {
+                method: "POST",
+                body: JSON.stringify({
+                    contractAddress: successTransactionAddress,
+                }),
+            });
         } catch (e) {
             console.log(e);
+        } finally {
+            refetch();
         }
     };
 
-    useEffect(() => {
-        fetchContract();
-    }, []);
     return (
         <>
             <div className="border-2 border-black p-20 flex flex-col gap-10 rounded-lg">
@@ -91,11 +66,14 @@ const EscrowContract = ({ account }: any) => {
                 <div className="max-h-[400px] overflow-y-auto flex flex-col gap-10">
                     {/* <h1>{JSON.stringify(contracts)}</h1> */}
                     {contracts &&
-                        contracts?.map((el: any) => {
+                        contracts?.map((el: any, index: number) => {
                             const parsed = JSON.parse(el);
                             return (
                                 <>
-                                    <div className="border-2 border-black p-5 rounded-lg">
+                                    <div
+                                        key={index}
+                                        className="border-2 border-black p-5 rounded-lg"
+                                    >
                                         <div className="flex gap-10">
                                             <div>
                                                 <div className="mb-5">
@@ -125,8 +103,7 @@ const EscrowContract = ({ account }: any) => {
                                                 <div className="mb-5">
                                                     <h1>Value:</h1>
                                                     <h1>
-                                                        {+parsed?.value}{" "}
-                                                        ETH
+                                                        {+parsed?.value} ETH
                                                     </h1>
                                                 </div>
                                             </div>
@@ -134,7 +111,7 @@ const EscrowContract = ({ account }: any) => {
                                         <Button
                                             onClick={() =>
                                                 approve(
-                                                    parsed.transactionAddress,
+                                                    parsed.contractAddress,
                                                     parsed.arbiterAddress
                                                 )
                                             }
