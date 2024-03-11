@@ -4,10 +4,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const client = createClient({
-    password: process.env.REDIS_PASSWORD as string,
+    password: process.env.NEXT_PUBLIC_REDIS_PASSWORD as string,
     socket: {
-        host: process.env.REDIS_SOCKET_HOST as string,
-        port: Number(process.env.REDIS_SOCKET_PORT),
+        host: process.env.NEXT_PUBLIC_REDIS_SOCKET_HOST as string,
+        port: Number(process.env.NEXT_PUBLIC_REDIS_SOCKET_PORT),
     },
 });
 

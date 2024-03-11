@@ -8,8 +8,8 @@ const config: HardhatUserConfig = {
     defaultNetwork: "localhost",
     networks: {
         sepolia: {
-            url: process.env.ALCHEMY_SEPOLIA_URL,
-            accounts: [process.env.WALLET_PRIVATE_KEY as string],
+            url: process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_URL,
+            accounts: [process.env.NEXT_PUBLIC_WALLET_PRIVATE_KEY as string],
         },
     },
 };

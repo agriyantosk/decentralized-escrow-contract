@@ -16,7 +16,7 @@ const ContractDeployer = ({
     const [balance, setBalance] = useState<any>();
 
     async function getAccounts() {
-        try {
+        try {   
             const provider = new ethers.AlchemyProvider(
                 "sepolia",
                 process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_API_KEY
@@ -121,7 +121,7 @@ const ContractDeployer = ({
                         onClick={handleButtonClick}
                         disabled={skeletonLoading}
                     >
-                        {skeletonLoading ? "Loading..." : "Button"}
+                        {skeletonLoading ? "Loading..." : "Deploy Contract"}
                     </Button>
                 </>
             </div>
