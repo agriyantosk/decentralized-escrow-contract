@@ -19,7 +19,7 @@ const ContractDeployer = ({
         try {
             const provider = new ethers.AlchemyProvider(
                 "sepolia",
-                "nvG8iXEA2WZisKCsiu2X4K09_4OeHFA8"
+                process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_API_KEY
             );
             const getBalance = await provider.getBalance(account.address);
 
@@ -114,7 +114,9 @@ const ContractDeployer = ({
                     />
                     <Button
                         className={`bg-blue-500 rounded-lg w-[50%] text-white hover:bg-blue-400 py-2 ${
-                            skeletonLoading ? "cursor-not-allowed bg-gray-500" : ""
+                            skeletonLoading
+                                ? "cursor-not-allowed bg-gray-500"
+                                : ""
                         }`}
                         onClick={handleButtonClick}
                         disabled={skeletonLoading}

@@ -4,6 +4,6 @@ import { sepolia } from "viem/chains";
 export const publicClient = createPublicClient({
     chain: sepolia,
     transport: http(
-        "https://eth-sepolia.g.alchemy.com/v2/nvG8iXEA2WZisKCsiu2X4K09_4OeHFA8"
+        process.env.NEXT_PUBLIC_ALCHEMY_SEPOLIA_URL
     ),
 });
