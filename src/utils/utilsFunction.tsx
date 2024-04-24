@@ -1,14 +1,7 @@
 import { ethers } from "ethers";
-import { Account, createWalletClient, custom, parseEther } from "viem";
+import { createWalletClient, custom, parseEther } from "viem";
 import { sepolia } from "viem/chains";
 import deploy from "../../scripts/deploy";
-
-export const storeRedis = async () => {
-    try {
-    } catch (error) {
-        console.log(error);
-    }
-};
 
 const checkIsWallet = async (address: string) => {
     try {
